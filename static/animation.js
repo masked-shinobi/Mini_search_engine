@@ -62,6 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
         btnNext.style.display = 'block';
 
         // Clear stage and initiate animation
+        stage.scrollTop = 0;
         stage.innerHTML = '<div style="width:100%; height:100%; display:flex; justify-content:center; align-items:center;">Loading phase...</div>';
         
         // Short timeout for smoother transition
@@ -162,50 +163,57 @@ document.addEventListener('DOMContentLoaded', () => {
             docsTarget.appendChild(el);
         });
 
+        // Measure final rest positions BEFORE starting any GSAP animations
+        // Force a layout/reflow to ensure coordinates are accurate
+        void stage.offsetWidth;
+        
+        const svgRect = svg.getBoundingClientRect();
+        const connections = [];
+
+        data.tokens.forEach((t, ti) => {
+            const tokenEl = document.getElementById(`token-${ti}`);
+            const hits = data.inverted_index[t] || [];
+
+            hits.forEach(hitDoc => {
+                const docIdx = docsArray.indexOf(hitDoc);
+                const docEl = document.getElementById(`doc-${docIdx}`);
+
+                if (tokenEl && docEl) {
+                    const tRect = tokenEl.getBoundingClientRect();
+                    const dRect = docEl.getBoundingClientRect();
+
+                    const x1 = tRect.right - svgRect.left;
+                    const y1 = tRect.top + tRect.height / 2 - svgRect.top;
+                    const x2 = dRect.left - svgRect.left;
+                    const y2 = dRect.top + dRect.height / 2 - svgRect.top;
+                    
+                    connections.push({ x1, y1, x2, y2, tokenEl, docEl });
+                }
+            });
+        });
+
         const tl = gsap.timeline();
         tl.from('.idx-token', { x: -30, opacity: 0, stagger: 0.1, duration: 0.4 })
           .from('.idx-doc', { x: 30, opacity: 0, stagger: 0.1, duration: 0.4 }, "-=0.2");
 
-        // Wait for elements to be in DOM and then draw lines
-        setTimeout(() => {
-            const svgRect = svg.getBoundingClientRect();
-            
-            data.tokens.forEach((t, ti) => {
-                const tokenEl = document.getElementById(`token-${ti}`);
-                const hits = data.inverted_index[t] || [];
+        // Now add the paths to the DOM and animate them on the timeline
+        connections.forEach((conn) => {
+            const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+            path.setAttribute("d", `M ${conn.x1} ${conn.y1} C ${(conn.x1 + conn.x2) / 2} ${conn.y1}, ${(conn.x1 + conn.x2) / 2} ${conn.y2}, ${conn.x2} ${conn.y2}`);
+            path.setAttribute("stroke", "#4285f4");
+            path.setAttribute("stroke-width", "2");
+            path.setAttribute("fill", "none");
+            path.setAttribute("opacity", "0.4");
+            svg.appendChild(path);
 
-                hits.forEach(hitDoc => {
-                    const docIdx = docsArray.indexOf(hitDoc);
-                    const docEl = document.getElementById(`doc-${docIdx}`);
+            const length = path.getTotalLength();
+            path.style.strokeDasharray = length;
+            path.style.strokeDashoffset = length;
 
-                    if (tokenEl && docEl) {
-                        const tRect = tokenEl.getBoundingClientRect();
-                        const dRect = docEl.getBoundingClientRect();
-
-                        const x1 = tRect.right - svgRect.left;
-                        const y1 = tRect.top + tRect.height / 2 - svgRect.top;
-                        const x2 = dRect.left - svgRect.left;
-                        const y2 = dRect.top + dRect.height / 2 - svgRect.top;
-
-                        const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-                        path.setAttribute("d", `M ${x1} ${y1} C ${(x1+x2)/2} ${y1}, ${(x1+x2)/2} ${y2}, ${x2} ${y2}`);
-                        path.setAttribute("stroke", "#4285f4");
-                        path.setAttribute("stroke-width", "2");
-                        path.setAttribute("fill", "none");
-                        path.setAttribute("opacity", "0.4");
-                        svg.appendChild(path);
-
-                        const length = path.getTotalLength();
-                        path.style.strokeDasharray = length;
-                        path.style.strokeDashoffset = length;
-
-                        tl.to(path.style, { strokeDashoffset: 0, duration: 0.5, ease: "power1.inOut" }, "-=0.3")
-                          .to(tokenEl, { backgroundColor: '#e8f0fe', color: '#4285f4', duration: 0.2 }, "-=0.5")
-                          .to(docEl, { backgroundColor: '#e8f0fe', borderColor: '#4285f4', duration: 0.2 }, "-=0.4");
-                    }
-                });
-            });
-        }, 100);
+            tl.to(path.style, { strokeDashoffset: 0, duration: 0.5, ease: "power1.inOut" }, ">-0.1")
+              .to(conn.tokenEl, { backgroundColor: '#e8f0fe', color: '#4285f4', duration: 0.2 }, "-=0.4")
+              .to(conn.docEl, { backgroundColor: '#e8f0fe', borderColor: '#4285f4', duration: 0.2 }, "-=0.3");
+        });
     }
 
     function renderRanking() {

@@ -286,7 +286,8 @@ body {
     background: white;
     width: 100%;
     max-width: 900px;
-    min-height: 600px;
+    height: 90vh; /* Fixed height relative to viewport */
+    max-height: 800px;
     border-radius: 4px;
     position: relative;
     display: flex;
@@ -361,7 +362,8 @@ body {
     overflow-y: auto;
     position: relative;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    justify-content: flex-start;
     align-items: center;
 }
 

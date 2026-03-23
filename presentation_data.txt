@@ -1,0 +1,86 @@
+================================================================================
+MINI SEARCH ENGINE PROJECT: TECHNICAL SUMMARY FOR PRESENTATION
+================================================================================
+
+1. PROJECT OVERVIEW
+--------------------------------------------------------------------------------
+- Purpose: A lightweight, high-performance information retrieval system.
+- Goals: Demonstrate the full IR pipeline (Preprocessing -> Indexing -> Ranking -> Clustering).
+- Tech Stack: 
+  - Backend: Flask (Python), NLTK (NLP).
+  - Ranking Algorithm: Okapi BM25.
+  - Clustering: Manual K-Means implementation with TF-IDF.
+  - Frontend: Modern CSS Grid, GSAP (Animations), SVG Mapping, MathJax/KaTeX.
+  - Deployment: Vercel Serverless.
+
+2. SYSTEM ARCHITECTURE
+--------------------------------------------------------------------------------
+- Pipeline: 
+  1. Corpus Ingestion: Reads text files from a 'corpus' directory.
+  2. Preprocessing: Tokenization, Stemming, Stopword Removal using NLTK.
+  3. Inverted Indexing: Maps terms to document lists for O(1) term lookup.
+  4. BM25 Ranking: Calculates relevance using TF, IDF, Ld, and avgdl.
+  5. K-Means Clustering: Groups related documents based on lexical similarity.
+  6. Visualization: A "Logic Trace" animation showing the backend flow in real-time.
+
+3. DETAILED MODULES
+--------------------------------------------------------------------------------
+
+A. DATA PREPROCESSING (Module: preprocessor.py)
+-----------------------------------------------
+- Normalization: Lowercases text and removes punctuation.
+- Tokenization: Splits text into meaningful units using NLTK's word_tokenize.
+- Stopword Filtering: Removes common "noise" words like "the", "a", "is".
+- Stemming: Uses Porter Stemmer to reduce words to their root form (e.g., "running" -> "run").
+- Optimization: On Vercel, NLTK data is lazily loaded into /tmp to manage serverless limits.
+
+B. INVERTED INDEX (Module: indexer.py)
+--------------------------------------
+- Data Structure: Dictionary mapping {term: [doc1, doc2, ...]}.
+- Complexity: Provides extremely fast document retrieval for given query tokens.
+- Storage: In-memory dictionary built dynamically during application startup.
+
+C. OKAPI BM25 RANKING (Module: ranker.py)
+-----------------------------------------
+- The Formula:
+  Score(D, Q) = Σ [ IDF(qi) * (f(qi, D) * (k1 + 1)) / (f(qi, D) + k1 * (1 - b + b * (|D| / avgdl))) ]
+- Key Variables:
+  - f(qi, D): Term frequency of qi in document D.
+  - |D|: Length of the current document.
+  - avgdl: Average document length in the entire collection.
+  - k1 & b: Saturation and length normalization parameters (1.5 and 0.75).
+- Importance: More accurate than standard TF-IDF as it accounts for document length and term saturation.
+
+D. LIGHTWEIGHT CLUSTERING (Module: clusterer.py)
+------------------------------------------------
+- Motivation: Replaced scikit-learn (huge dependency) with a manual implementation to fit Vercel bundle limits (250MB limit).
+- Vectorization: Built a manual TF-IDF generator.
+- Algorithm: Custom K-Means implementation using Euclidean distance.
+- Features: Handles centroid initialization, cluster assignment, and centroid updates in pure Python.
+
+4. USER INTERFACE & REAL-TIME VISUALIZATION
+--------------------------------------------------------------------------------
+- Sidebar Interaction: Quick access to "Logic Trace" and "Cluster Groups".
+- Animation Logic (animation.js):
+  - Phase 1 (Preprocessing): Visualizes tokens passing through "Logic Gates".
+  - Phase 2 (Inverted Index): Uses SVG Paths to draw animated connection lines between query tokens and matching documents.
+  - Phase 3 (BM25 Math): Renders the formula in LaTeX and shows a live "Breakdown Card" of the calculation for individual documents.
+  - Phase 4 (Final Result): Summary of execution time and document count.
+
+5. DEPLOYMENT & SERVERLESS OPTIMIZATION
+--------------------------------------------------------------------------------
+- Platform: Vercel (Python Runtime).
+- Challenges Overcome:
+  - Bundle Size: Reduced from 250MB+ to ~15MB by removing heavy libraries (pandas, sklearn).
+  - Initialization: Implemented `ensure_initialized()` for lazy engine builds to prevent Function Invocation Errors.
+  - Read-Only Limits: Redirected NLTK data downloads to /tmp.
+
+6. CONCLUSION / FUTURE WORK
+--------------------------------------------------------------------------------
+- Scalability: The system is designed to handle thousands of documents with minimal memory overhead.
+- Flexibility: The modular architecture allows swapping the BM25 formula for other algorithms (like Vector Space Model).
+- Educational Impact: The "Logic Trace" feature makes the black-box backend visible and understandable.
+
+================================================================================
+END OF SUMMARY
+================================================================================
