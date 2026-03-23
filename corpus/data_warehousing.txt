@@ -1,0 +1,7 @@
+Data Warehousing involves collecting and managing data from various sources to provide meaningful business insights. Unlike operational databases which are optimized for transaction processing, data warehouses are designed for query and analysis. They typically use a star or snowflake schema to organize data into facts and dimensions.
+
+ETL (Extract, Transform, Load) is the process of moving data into a warehouse. During the transformation phase, data is cleaned and formatted to ensure consistency across the organization. This allows business analysts to run complex reports and use Business Intelligence (BI) tools to visualize trends and make data-driven decisions.
+
+Big Data refers to datasets that are too large or complex for traditional data processing software. Characteristics of big data often include the three Vs: Volume, Velocity, and Variety. Technologies like Hadoop and Spark enable the distributed processing of these massive datasets across clusters of computers.
+
+Cloud databases have become the standard for modern applications, offering elasticity and managed services. Providers like AWS RDS and Google Cloud Spanner allow developers to scale their database infrastructure up or down based on demand without worrying about hardware maintenance, backup, or patching.

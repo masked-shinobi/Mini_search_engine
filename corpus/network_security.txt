@@ -1,0 +1,7 @@
+Network Security consists of the policies and practices adopted to prevent and monitor unauthorized access, misuse, or modification of a computer network. Threat vectors include malware, phishing, and Denial of Service (DoS) attacks. A robust security strategy involves multiple layers of defense, often referred to as defense in depth.
+
+Firewalls act as a barrier between a trusted internal network and untrusted external networks (like the internet), filtering traffic based on security rules. Intrusion Detection Systems (IDS) and Intrusion Prevention Systems (IPS) monitor network traffic for suspicious activity and can take action to block potential threats in real time.
+
+Encryption is the process of converting information into a secret code to prevent unauthorized access. Symmetric encryption uses the same key for both encryption and decryption, while asymmetric encryption uses a public and private key pair. Public Key Infrastructure (PKI) is essential for secure communication over the web.
+
+Network administrators also use monitoring tools to track performance and identify bottlenecks. Simple Network Management Protocol (SNMP) is a standard protocol for collecting and organizing information about managed devices on IP networks. Regular audits and vulnerability assessments are necessary to maintain a secure networking environment.

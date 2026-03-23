@@ -1,0 +1,7 @@
+Distributed Systems consist of multiple independent computers that appear to its users as a single coherent system. These systems are used to build large-scale applications that require high availability and fault tolerance. In a distributed environment, components communicate and coordinate their actions by passing messages.
+
+Concurrency and synchronization are major challenges in distributed systems. Since there is no global clock, systems must use consensus algorithms like Paxos or Raft to agree on a single value or state. Distributed databases like Cassandra use replication to ensure that data is available even if some nodes fail.
+
+Microservices architecture is a modern approach where an application is built as a collection of small, independent services. Each service runs in its own process and communicates with others via APIs (often using REST or gRPC). This allows teams to develop, deploy, and scale services independently, increasing overall agility.
+
+Virtualization and containerization have transformed how operating systems are deployed. Hypervisors allow multiple virtual machines (VMs) to run on a single physical host, each with its own OS. Containers like Docker share the host's OS kernel but provide isolated environments for applications, offering better resource efficiency and portability.

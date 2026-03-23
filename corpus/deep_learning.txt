@@ -1,0 +1,7 @@
+Deep Learning is a specialized form of machine learning that utilizes artificial neural networks with multiple layers (hence "deep"). These networks are inspired by the structure of the human brain and are particularly effective at handling unstructured data such as images, audio, and video. Convolutional Neural Networks (CNNs) are the standard for image recognition tasks.
+
+The training process for deep learning models requires massive datasets and significant computational power, often provided by GPUs. Stochastic Gradient Descent and its variants are used to minimize the loss function and update the weights of the network. Backpropagation is the core algorithm that allows the network to learn from its errors by propagating them backward through the layers.
+
+Generative AI is a recent advancement in deep learning that can create new content, from realistic images to coherent text. Generative Adversarial Networks (GANs) and Variational Autoencoders (VAEs) are among the popular architectures used for these purposes. These models have revolutionized creative industries and research.
+
+Despite its power, deep learning is often criticized for being a "black box" because it’s difficult to understand how the internal layers arrive at a specific output. This lack of interpretability is a major hurdle for its application in high-stakes environments like healthcare and law enforcement where accountability is paramount.

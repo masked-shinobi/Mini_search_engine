@@ -1,0 +1,7 @@
+Machine Learning (ML) is the scientific study of algorithms and statistical models that computer systems use to perform a specific task without explicit instructions. Instead, they rely on patterns and inference. ML is a subset of artificial intelligence and is primarily divided into supervised, unsupervised, and reinforcement learning.
+
+Supervised learning involves training a model on a labeled dataset where the correct output is known. Common algorithms include linear regression for predicting values and decision trees for classification. Unsupervised learning, on the other hand, deals with unlabeled data and tries to find hidden structures or clusters, such as grouping customers based on buying habits using K-Means.
+
+Reinforcement learning is based on rewarding desired behaviors and punishing undesired ones. This approach is widely used in training agents for games and robotics. Feature engineering is a crucial step in the ML workflow, where domain knowledge is used to select the most relevant variables for the model to improve performance.
+
+The success of machine learning depends on both the quality of the data and the choice of the algorithm. Overfitting and underfitting are common problems where the model either learns the training data too well (failing on new data) or fails to capture the underlying pattern entirely. Standard evaluation metrics like accuracy, precision, and recall help measure model effectiveness.

@@ -1,0 +1,7 @@
+Computer Networking is the practice of connecting computers together to share resources and information. The Internet is the most well-known example of a global network. Networking relies on protocols, which are set rules for how data is transmitted. The OSI model provides a standardized framework with seven layers, ranging from the physical layer to the application layer.
+
+TCP/IP is the fundamental suite of protocols for the Internet. IP (Internet Protocol) handles the addressing and routing of packets, while TCP (Transmission Control Protocol) ensures that data is delivered reliably and in the correct order. Each device on a network is identified by a unique IP address, which can be IPv4 or the newer IPv6.
+
+Local Area Networks (LANs) connect devices within a small geographic area, such as a home or office. Wide Area Networks (WANs) span larger distances and connect multiple LANs. Routers and switches are key hardware components that direct traffic between different networks and devices efficiently.
+
+Wireless networking, or Wi-Fi, uses radio waves to connect devices without physical cables. Security is a major concern in networking, involving the use of firewalls, encryption (like SSL/TLS), and virtual private networks (VPNs) to protect data from unauthorized access and cyberattacks.

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document Clusters</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="nav-bar">
+        <div class="container container-nav">
+            <a href="/" class="logo-small"><span>Mini</span>Search</a>
+            <h1>Document Clusters</h1>
+            <a href="/" class="btn btn-sm">Back to Search</a>
+        </div>
+    </div>
+
+    <div class="container clusters-container">
+        <p class="stats">Documents grouped by semantic similarity using K-Means.</p>
+        
+        <div class="cluster-grid">
+            {% for cluster_id, filenames in clusters.items() %}
+            <div class="cluster-card">
+                <h3>Cluster #{{ cluster_id + 1 }}</h3>
+                <ul>
+                    {% for fn in filenames %}
+                    <li>{{ fn }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

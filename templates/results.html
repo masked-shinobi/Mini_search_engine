@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Results - Mini Search Engine</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+</head>
+<body>
+    <div class="nav-bar">
+        <div class="container container-nav">
+            <a href="/" class="logo-small"><span>Mini</span>Search</a>
+            <form action="/search" method="POST" class="search-form-small">
+                <div class="search-box-small">
+                    <input type="text" name="query" value="{{ query }}" required>
+                    <button type="submit">Search</button>
+                </div>
+            </form>
+            <div class="nav-actions">
+                <button id="btn-how-it-works" class="btn btn-sm btn-primary">Logic Trace</button>
+                <a href="/clusters" class="btn btn-sm">View Clusters</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container results-layout">
+        <div class="results-main">
+            <p class="stats">Showing results for: <strong>{{ query }}</strong></p>
+            
+            {% if results %}
+                {% for res in results %}
+                <div class="result-item">
+                    <h3 class="result-title">{{ res.filename }}</h3>
+                    <div class="result-meta">Score: {{ res.score }}</div>
+                    <p class="result-snippet">{{ res.snippet }}</p>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="no-results">
+                    <p>No results found for "{{ query }}".</p>
+                    <p>Try different keywords or check the corpus.</p>
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="results-sidebar">
+            <div class="sidebar-card">
+                <h3>Trace Logic</h3>
+                <p>See exactly how the backend processed your query <b>"{{ query }}"</b>.</p>
+                <button id="btn-trace-sidebar" class="btn-ripple">Start Simulation</button>
+                <div class="trace-stats">
+                    <div class="stat-row"><span>Tokens:</span> <span>{{ trace.tokens | length }}</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Trace Animation Modal -->
+    <div id="animation-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close">&times;</button>
+            <div class="modal-header">
+                <h2>Execution: {{ query }}</h2>
+                <div id="breadcrumb" class="stepper">
+                    <span class="active" data-step="0">1. Preprocessing</span>
+                    <i class="arrow">→</i>
+                    <span data-step="1">2. Inverted Index</span>
+                    <i class="arrow">→</i>
+                    <span data-step="2">3. BM25 Ranking</span>
+                    <i class="arrow">→</i>
+                    <span data-step="3">4. Final Results</span>
+                </div>
+            </div>
+            <div id="animation-stage" class="stage">
+                <!-- GSAP Canvas / SVGs -->
+            </div>
+            <div class="modal-footer">
+                <button id="btn-prev" class="btn">Back</button>
+                <button id="btn-next" class="btn btn-primary">Next Phase</button>
+            </div>
+        </div>
+    </div>
+
+    <script>window.TRACE_DATA = {{ trace | tojson | safe }};</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="{{ url_for('static', filename='animation.js') }}"></script>
+</body>
+</html>

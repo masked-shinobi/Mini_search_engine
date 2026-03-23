@@ -1,0 +1,7 @@
+A Database Management System (DBMS) is software designed to store, retrieve, and manage data in an efficient and organized manner. Relational databases like MySQL and PostgreSQL use tables with rows and columns to represent data and relationships. Structured Query Language (SQL) is the standard interface for interacting with these relational systems.
+
+The ACID properties (Atomicity, Consistency, Isolation, Durability) are the foundation of reliable database transactions. Atomicity ensures that a transaction is all-or-nothing, while consistency guarantees that data remains valid according to predefined rules. Isolation ensures that concurrent transactions do not interfere with each other, and durability ensures that data persists even after a crash.
+
+Non-relational or NoSQL databases have gained popularity for handling large-scale, unstructured data and providing high scalability. These include document stores like MongoDB, key-value pairs like Redis, and graph databases like Neo4j. NoSQL systems often sacrifice some level of consistency for improved performance and flexibility in schema design.
+
+Database indexing is a technique used to speed up data retrieval operations. By creating a separate data structure (like a B-tree or Hash index), the DBMS can find specific records without scanning the entire table. However, indexing comes at the cost of additional storage space and slower write operations.

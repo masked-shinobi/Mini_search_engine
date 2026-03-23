@@ -1,0 +1,6 @@
+flask
+nltk
+scikit-learn
+rank_bm25
+numpy
+pandas
