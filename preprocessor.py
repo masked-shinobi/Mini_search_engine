@@ -4,10 +4,29 @@ from nltk.tokenize import word_tokenize
 from nltk.stem import PorterStemmer
 import string
 
-# Download necessary NLTK resource
-nltk.download('punkt')
-nltk.download('stopwords')
-nltk.download('punkt_tab')
+# Handle NLTK data for serverless environments (Vercel)
+import os
+import nltk
+
+# Use /tmp as it's the only writable directory on Vercel
+nltk_data_path = os.path.join('/tmp', 'nltk_data')
+# Ensure the path is recognized by NLTK
+if nltk_data_path not in nltk.data.path:
+    nltk.data.path.append(nltk_data_path)
+
+def setup_nltk():
+    try:
+        # Check if punkt is already present to skip download
+        nltk.data.find('tokenizers/punkt', paths=[nltk_data_path])
+    except LookupError:
+        if not os.path.exists(nltk_data_path):
+            os.makedirs(nltk_data_path)
+        # Download essential packs
+        for package in ['punkt', 'stopwords', 'punkt_tab']:
+            nltk.download(package, download_dir=nltk_data_path, quiet=True)
+
+# We will call this from app.py during initialization
+# setup_nltk()
 
 class Preprocessor:
     def __init__(self):

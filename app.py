@@ -13,22 +13,37 @@ ranker = Ranker()
 clusterer = Clusterer(n_clusters=4)
 
 # Initialize index and ranker once at the start
+from preprocessor import setup_nltk
+
 def initialize_engine():
-    if not os.path.exists(CORPUS_PATH): os.makedirs(CORPUS_PATH)
+    # Setup NLTK (downloads only if missing in /tmp)
+    setup_nltk()
+    
+    if not os.path.exists(CORPUS_PATH):
+        os.makedirs(CORPUS_PATH)
+        
     indexer.build_index()
     ranker.fit(indexer.get_documents())
 
-# Run initialization
-initialize_engine()
+# Flag to check if engine is ready
+_engine_initialized = False
+
+def ensure_initialized():
+    global _engine_initialized
+    if not _engine_initialized:
+        initialize_engine()
+        _engine_initialized = True
 
 @app.route('/')
 def index():
     """Search UI"""
+    ensure_initialized() # Ensure engine is initialized on first request
     return render_template('index.html')
 
 @app.route('/search', methods=['POST'])
 def search():
     """Ranked search results"""
+    ensure_initialized()
     query = request.form.get('query')
     if not query:
         return render_template('index.html', error="Please enter a search term.")
@@ -76,7 +91,7 @@ def search():
 @app.route('/clusters')
 def clusters():
     """Document clusters"""
-    indexer.build_index() # Ensure we have latest documents
+    ensure_initialized()
     docs = indexer.get_documents()
     
     if not docs:
